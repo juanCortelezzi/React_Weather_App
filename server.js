@@ -37,14 +37,14 @@ app.get("/weatherapi/onecall/:latlon", async (req, res) => {
   res.json(fetch_response);
 });
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "build")));
-  app.get("/", (req, res) => {
-    app.get("/*", (req, res) => {
-      res.sendfile(path.join(__dirname, "build", "index.html"));
-    });
+//if (process.env.NODE_ENV === "production") {
+app.use(express.static(path.join(__dirname, "build")));
+app.get("/", (req, res) => {
+  app.get("/*", (req, res) => {
+    res.sendfile(path.join(__dirname, "build", "index.html"));
   });
-}
+});
+//}
 
 app.listen(port, () =>
   console.log(`server running at http://${hostname}:${port}`)
