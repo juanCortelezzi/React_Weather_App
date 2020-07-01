@@ -15,6 +15,8 @@ const logger = (req, res, next) => {
 
 app.use(logger);
 
+app.use(express.static("client/build"));
+
 app.get("/weatherapi/weather/:latlon", async (req, res) => {
   const latlon = req.params.latlon.split(",");
   const lat = latlon[0];
@@ -37,15 +39,8 @@ app.get("/weatherapi/onecall/:latlon", async (req, res) => {
   res.json(fetch_response);
 });
 
-//if (process.env.NODE_ENV === "production") {
-app.use(express.static(path.join(__dirname, "build")));
-app.get("/", (req, res) => {
-  app.get("/*", (req, res) => {
-    res.sendfile(path.join(__dirname, "build", "index.html"));
-  });
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
-//}
 
-app.listen(port, () =>
-  console.log(`server running at http://${hostname}:${port}`)
-);
+app.listen(port, () => console.log(`server running on port: ${port}`));
